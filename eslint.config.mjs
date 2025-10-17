@@ -15,4 +15,5 @@ export default withNuxt(antfu({
       message: 'Do not use <style> block in this project. Use TailwindCSS classes instead.',
     }],
   },
-}))
+  // this rule is an old Vue 2 rule that is enabled for server components which we dont use... https://github.com/nuxt/eslint/issues/457
+})).removeRules('vue/no-multiple-template-root')
