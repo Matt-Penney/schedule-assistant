@@ -69,7 +69,7 @@ async function addReminder(data: any) {
           type="datetime-local"
           name="date_due"
           label="When do you want to be reminded?"
-          validation="required|date_after:2025-01-01"
+          validation="required|date_after"
           validation-visibility="live"
         />
         <FormKit
