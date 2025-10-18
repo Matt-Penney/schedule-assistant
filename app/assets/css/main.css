@@ -1,1 +1,15 @@
 @import 'tailwindcss';
+@import "@nuxt/ui";
+
+#__nuxt {
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --ui-primary: orange;
+}
+
+.dark {
+  --ui-primary: orange;
+}

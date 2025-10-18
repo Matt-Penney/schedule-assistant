@@ -7,6 +7,8 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
+    '@nuxt/ui',
+    '@formkit/nuxt',
   ],
   compatibilityDate: '2025-07-15',
   devtools: {
@@ -34,5 +36,18 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   devServer: {
     port: 3000,
+  },
+  app: {
+    head: {
+      title: 'Jarvis Bot',
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        { charset: 'utf-8' },
+      ],
+    },
+  },
+  formkit: {
+    // Experimental support for auto loading (see note):
+    autoImport: false,
   },
 })

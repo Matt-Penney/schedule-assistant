@@ -14,6 +14,15 @@ export default withNuxt(antfu({
       element: 'style',
       message: 'Do not use <style> block in this project. Use TailwindCSS classes instead.',
     }],
+    'vue/max-attributes-per-line': ['error', {
+      singleline: {
+        max: 1,
+      },
+      multiline: {
+        max: 1,
+      },
+    }],
+    'vue/custom-event-name-casing': ['error', 'kebab-case'],
   },
   // this rule is an old Vue 2 rule that is enabled for server components which we dont use... https://github.com/nuxt/eslint/issues/457
 })).removeRules('vue/no-multiple-template-root')
