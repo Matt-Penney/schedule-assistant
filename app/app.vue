@@ -4,4 +4,6 @@
       <NuxtPage />
     </NuxtLayout>
   </UApp>
+
+  <NuxtPwaManifest />
 </template>

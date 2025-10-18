@@ -54,11 +54,15 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Jarvis',
+      name: 'Jarvis Bot',
       short_name: 'Jarvis',
       theme_color: '#FFA500',
       start_url: '/',
       display: 'standalone',
+      icons: [
+        { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+      ],
     },
     workbox: {
       navigateFallback: '/',
