@@ -1,9 +1,22 @@
 <script lang="ts" setup>
-import { useStorage } from '@vueuse/core'
 import { onMounted, onUnmounted } from 'vue'
 import ReminderSlideover from '~/components/ReminderSlideover.vue'
 
-const reminders = useStorage('reminders', [] as Array<{ id: number, text: string }>)
+const fetchedReminders = await fetchReminders()
+async function fetchReminders() {
+  const { data } = await useFetch<Reminder[]>('api/reminders', {
+    method: 'get',
+  })
+  console.log('Fetched reminders in fetchReminders function:', data.value)
+  return data
+}
+
+interface Reminder {
+  id: number
+  created_at: Date
+  name: string
+  date_due: Date
+}
 
 const toast = useToast()
 const overlay = useOverlay()
@@ -15,7 +28,7 @@ function open() {
 }
 
 function removeReminder(id: number) {
-  reminders.value = reminders.value.filter(reminder => reminder.id !== id)
+  fetchedReminders.value = fetchedReminders.value?.filter(reminder => reminder.id !== id)
 
   toast.add({
     title: 'Removed',
@@ -26,15 +39,9 @@ function removeReminder(id: number) {
 
 onMounted(() => {
   const eventHandler = () => {
-    console.log('new-clicked-reminders event caught!')
-    // addReminder()
     open()
   }
-
-  // Add the event listener for the specific event name
   window.addEventListener('new-clicked-reminders', eventHandler)
-
-  // Clean up the event listener when the component is unmounted
   onUnmounted(() => {
     window.removeEventListener('new-clicked-reminders', eventHandler)
   })
@@ -47,11 +54,11 @@ onMounted(() => {
     <p>Your reminders will be listed here.</p>
 
     <UCard
-      v-for="reminder in reminders"
+      v-for="reminder in fetchedReminders"
       :key="reminder.id"
     >
       <template #header>
-        <p>{{ reminder.text }}</p>
+        <p>{{ reminder.name }}</p>
 
         <UButton
           icon="i-lucide-trash"
@@ -60,6 +67,9 @@ onMounted(() => {
           variant="solid"
           @click="removeReminder(reminder.id)"
         />
+      </template>
+      <template #default>
+        <p>Reminder Date: {{ reminder.date_due }}</p>
       </template>
     </UCard>
   </div>

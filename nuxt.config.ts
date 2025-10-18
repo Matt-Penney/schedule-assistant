@@ -1,3 +1,4 @@
+import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -49,5 +50,21 @@ export default defineNuxtConfig({
   formkit: {
     // Experimental support for auto loading (see note):
     autoImport: false,
+  },
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'Jarvis',
+      short_name: 'Jarvis',
+      theme_color: '#FFA500',
+      start_url: '/',
+      display: 'standalone',
+    },
+    workbox: {
+      navigateFallback: '/',
+    },
+  },
+  runtimeConfig: {
+    databaseUrl: process.env.DATABASE_URL,
   },
 })

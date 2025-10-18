@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import { ref } from 'vue'
 
 const emit = defineEmits<{ close: [boolean] }>()
@@ -7,29 +6,40 @@ const emit = defineEmits<{ close: [boolean] }>()
 const myForm = ref('myForm')
 
 const toast = useToast()
-const reminders = useStorage('reminders', [] as Array<{ id: number, text: string, date: Date }>)
 
 function submitForm() {
-  // retrieve the core node (several ways to do this):
   const node = myForm.value.node
-  // submit the form!
   node.submit()
 }
 
-function addReminder(data: any) {
-  console.log('Form submitted with data:', data)
-  reminders.value.push({
-    id: Date.now(),
-    text: data.reminderText,
-    date: new Date(data.reminderDate),
+async function addReminder(data: any) {
+  // console.log('Form submitted with data:', data)
+
+  const { error } = await $fetch('/api/reminders', {
+    method: 'post',
+    body: {
+      created_at: new Date(Date.now()),
+      name: data.name,
+      date_due: new Date(data.date_due),
+      description: data.description,
+    },
   })
 
-  toast.add({
-    title: 'Success',
-    description: 'Reminder added successfully!',
-    color: 'success',
-  })
-  emit('close', true)
+  if (error) {
+    toast.add({
+      title: 'Error',
+      description: 'Failed to add reminder. Please try again.',
+      color: 'error',
+    })
+  }
+  else {
+    toast.add({
+      title: 'Success',
+      description: 'Reminder added successfully!',
+      color: 'success',
+    })
+    emit('close', true)
+  }
 }
 </script>
 
@@ -50,17 +60,22 @@ function addReminder(data: any) {
       >
         <FormKit
           type="text"
-          name="reminderText"
+          name="name"
           label="What's your reminder?"
           validation="required"
           validation-visibility="live"
         />
         <FormKit
           type="datetime-local"
-          label="reminder-date"
-          name="reminderDate"
-          help="Enter your reminder date"
+          name="date_due"
+          label="When do you want to be reminded?"
           validation="required|date_after:2025-01-01"
+          validation-visibility="live"
+        />
+        <FormKit
+          type="text"
+          name="description"
+          label="Description"
           validation-visibility="live"
         />
       </FormKit>

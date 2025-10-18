@@ -33,13 +33,15 @@ const items: NavigationMenuItem[] = [
     to: '/settings',
   },
 ]
+
+const test = await useFetch('/api/test')
 </script>
 
 <template>
   <UHeader title="Jarvis Bot">
     <template #right>
+      <p>API connection: {{ test ? 'true' : 'false' }}</p>
       <UColorModeButton />
-
       <UTooltip
         text="Open on GitHub"
         :kbds="['meta', 'G']"
