@@ -1,10 +1,8 @@
-import { neon } from '@neondatabase/serverless'
+import { db } from '../../utils/db'
 
 export default defineCachedEventHandler(
   async () => {
-    const { databaseUrl } = useRuntimeConfig()
-    const db = neon(databaseUrl)
-    const result = await db`SELECT * FROM reminders`
+    const result = await db`SELECT * FROM reminders ORDER BY date_due`
     return result
   },
   // {

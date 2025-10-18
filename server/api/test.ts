@@ -1,9 +1,7 @@
-import { neon } from '@neondatabase/serverless'
+import { db } from '../utils/db'
 
 export default defineCachedEventHandler(
   async () => {
-    const { databaseUrl } = useRuntimeConfig()
-    const db = neon(databaseUrl)
     const result = await db`SELECT version()`
     return result
   },
