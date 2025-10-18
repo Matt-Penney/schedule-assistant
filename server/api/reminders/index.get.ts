@@ -2,7 +2,7 @@ import { db } from '../../utils/db'
 
 export default defineCachedEventHandler(
   async () => {
-    const result = await db`SELECT * FROM reminders ORDER BY date_due`
+    const result = await db`SELECT * FROM reminders ORDER BY date_due ASC`
     return result
   },
   // {

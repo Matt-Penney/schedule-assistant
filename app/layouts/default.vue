@@ -38,9 +38,9 @@ const test = await useFetch('/api/test')
 </script>
 
 <template>
-  <UHeader title="Jarvis Bot">
+  <UHeader title="Jarvis">
     <template #right>
-      <p>API connection: {{ test ? 'true' : 'false' }}</p>
+      <p>API: {{ test ? 'true' : 'false' }}</p>
       <UColorModeButton />
       <UTooltip
         text="Open on GitHub"

@@ -13,9 +13,10 @@ async function fetchReminders() {
 
 interface Reminder {
   id: number
-  created_at: Date
-  name: string
+  title: string
   date_due: Date
+  description?: string
+  created_at: Date
 }
 
 const toast = useToast()
@@ -58,7 +59,7 @@ onMounted(() => {
       :key="reminder.id"
     >
       <template #header>
-        <p>{{ reminder.name }}</p>
+        <p>{{ reminder.title }}</p>
 
         <UButton
           icon="i-lucide-trash"

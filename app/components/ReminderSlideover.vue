@@ -15,17 +15,17 @@ function submitForm() {
 async function addReminder(data: any) {
   // console.log('Form submitted with data:', data)
 
-  const { error } = await useFetch('/api/reminders', {
+  const { status } = await useFetch('/api/reminders', {
     method: 'post',
     body: {
-      created_at: Date.now(),
-      name: data.name,
+      title: data.title,
       date_due: data.date_due,
       description: data.description,
+      created_at: new Date(Date.now()),
     },
   })
 
-  if (error) {
+  if (status.value !== 'success') {
     toast.add({
       title: 'Error',
       description: 'Failed to add reminder. Please try again.',
@@ -60,7 +60,7 @@ async function addReminder(data: any) {
       >
         <FormKit
           type="text"
-          name="name"
+          name="title"
           label="What's your reminder?"
           validation="required"
           validation-visibility="live"
