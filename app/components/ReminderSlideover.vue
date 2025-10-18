@@ -15,12 +15,12 @@ function submitForm() {
 async function addReminder(data: any) {
   // console.log('Form submitted with data:', data)
 
-  const { error } = await $fetch('/api/reminders', {
+  const { error } = await useFetch('/api/reminders', {
     method: 'post',
     body: {
-      created_at: new Date(Date.now()),
+      created_at: Date.now(),
       name: data.name,
-      date_due: new Date(data.date_due),
+      date_due: data.date_due,
       description: data.description,
     },
   })

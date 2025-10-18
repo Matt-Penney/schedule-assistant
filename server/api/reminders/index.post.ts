@@ -6,7 +6,12 @@ export default defineEventHandler(
     const db = neon(databaseUrl)
 
     const body = await readBody(event)
-    const result = await db`insert into reminders (created_at, name, date_due) values (${body.created_at}, ${body.name}, ${body.date_due})`
+
+    if (!body.created_at || !body.name || !body.date_due) {
+      throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
+    }
+
+    const result = await db`insert into reminders (created_at, name, date_due, description) values (${body.created_at}, ${body.name}, ${body.date_due}, ${body.description})`
     return result
   },
 )
