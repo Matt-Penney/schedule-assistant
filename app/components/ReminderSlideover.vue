@@ -18,7 +18,7 @@ function submitForm() {
 async function addReminder(data: any) {
   // console.log('Form submitted with data:', data)
 
-  const { data: newReminder } = await useFetch('/api/reminders', {
+  const { data: newReminder } = await useFetch('/api/reminders/create-reminder', {
     method: 'post',
     body: {
       title: data.title,

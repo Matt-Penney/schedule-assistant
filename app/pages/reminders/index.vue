@@ -8,11 +8,12 @@ interface Reminder {
   date_due: Date
   description?: string
   created_at: Date
+  completed: boolean
 }
 
 const { data: fetchedReminders } = await useAsyncData<Reminder[]>(
   'reminders',
-  () => $fetch<Reminder[]>('/api/reminders', { method: 'GET' }),
+  () => $fetch<Reminder[]>('/api/reminders/get-pending-reminders', { method: 'GET' }),
   {
     default: () => [],
   },
@@ -39,13 +40,12 @@ async function removeReminder(id: number) {
 
   const originalReminders = [...fetchedReminders.value]
 
-  fetchedReminders.value = fetchedReminders.value.filter(reminder => reminder.id !== id)
-
   try {
     const { status } = await useFetch(`/api/reminders/${id}`)
     if (status.value !== 'success')
       throw new Error('Failed to delete reminder')
 
+    fetchedReminders.value = fetchedReminders.value.filter(reminder => reminder.id !== id)
     toast.add({
       title: 'Removed',
       description: 'Reminder removed successfully!',
@@ -78,7 +78,7 @@ onMounted(() => {
 <template>
   <UContainer class="p-8">
     <div v-if="fetchedReminders.length === 0">
-      <UEmpty
+      <!-- <UEmpty
         variant="naked"
         icon="i-lucide-bell"
         title="No reminders"
@@ -91,7 +91,7 @@ onMounted(() => {
             variant: 'subtle',
           },
         ]"
-      />
+      /> -->
       No reminders (UEmpty component coming soon)
     </div>
     <div v-else>
