@@ -73,6 +73,12 @@ onMounted(() => {
     window.removeEventListener('new-clicked-reminders', eventHandler)
   })
 })
+
+function runOpenAI() {
+  $fetch('/api/scheduler/execute', {
+    method: 'get',
+  })
+}
 </script>
 
 <template>
@@ -95,6 +101,15 @@ onMounted(() => {
       No reminders (UEmpty component coming soon)
     </div>
     <div v-else>
+      <DevOnly>
+        <UButton
+          icon="i-lucide-plus"
+          color="primary"
+          variant="solid"
+          label="Run OpenAI Reminder Scan"
+          @click="runOpenAI"
+        />
+      </DevOnly>
       <UCard
         v-for="reminder in fetchedReminders"
         :key="reminder.id"

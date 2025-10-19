@@ -1,28 +1,65 @@
-export default defineEventHandler(
-  async () => {
-    const now = new Date()
-    const due = await getDueNotifications(now)
+import webPush from 'web-push'
+import { db } from '../../utils/db'
 
-    if (due.length === 0)
-      return { message: 'No notifications due', checked: now.toISOString() }
+export default defineEventHandler(async () => {
+  const cfg = useRuntimeConfig()
 
-    console.log(`🚀 Found ${due.length} due notifications at ${now.toISOString()}`)
+  webPush.setVapidDetails(
+    'mailto:you@localhost',
+    cfg.public.vapidPublicKey,
+    cfg.vapidPrivateKey,
+  )
 
-    for (const n of due) {
-      try {
-        // === (1) SEND LOGIC GOES HERE ===
-        // For now, just console.log. Later, you’ll integrate web-push here.
-        console.log(`🔔 Sending notification: ${n.title}`)
+  const now = new Date()
+  const due = await getDueNotifications(now)
 
-        // === (2) UPDATE DB ===
-        await markAsSent(n.id)
+  if (due.length === 0)
+    return { message: 'No notifications due', checked: now.toISOString() }
+
+  console.log(`🚀 Found ${due.length} due notifications at ${now.toISOString()}`)
+
+  // Fetch subscriptions (or fallback)
+  const subs = await db`SELECT endpoint, p256dh, auth FROM push_subscriptions`
+  const fallbackSub = null // optional hardcoded subscription
+  const targets = subs.length ? subs : (fallbackSub ? [fallbackSub] : [])
+
+  for (const n of due) {
+    try {
+      const payload = JSON.stringify({
+        title: n.title,
+        body: n.message ?? '',
+      })
+
+      for (const sub of targets) {
+        try {
+          await webPush.sendNotification(
+            {
+              endpoint: sub.endpoint,
+              keys: { p256dh: sub.p256dh, auth: sub.auth },
+            },
+            payload,
+          )
+        }
+        catch (err: any) {
+          // Handle expired subscriptions
+          if (err?.statusCode === 410 || err?.statusCode === 404) {
+            await db`DELETE FROM push_subscriptions WHERE endpoint = ${sub.endpoint}`
+            console.log(`🧹 Removed expired subscription for ${sub.endpoint}`)
+          }
+          else {
+            console.error('❌ Push failed:', err?.statusCode || err)
+          }
+        }
       }
-      catch (err) {
-        console.error('❌ Notification send failed:', err)
-        await updateError(n.id, (err as Error).message)
-      }
+
+      // After attempting all pushes
+      await markAsSent(n.id)
     }
+    catch (err: any) {
+      console.error('❌ Notification processing failed:', err)
+      await db`UPDATE notifications SET error = ${err.message} WHERE id = ${n.id}`
+    }
+  }
 
-    return { success: true, processed: due.length }
-  },
-)
+  return { success: true, processed: due.length }
+})
