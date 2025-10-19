@@ -16,7 +16,7 @@ export async function createNotification(data: {
 
 // Find notifications that are due (for the executor)
 export async function getDueNotifications(now = new Date()) {
-  return await db`
+  return db`
     SELECT * FROM notifications
     WHERE sent_at IS NULL
     AND scheduled_for <= ${now}

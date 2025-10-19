@@ -3,9 +3,8 @@ export default defineEventHandler(
     const now = new Date()
     const due = await getDueNotifications(now)
 
-    if (due.length === 0) {
+    if (due.length === 0)
       return { message: 'No notifications due', checked: now.toISOString() }
-    }
 
     console.log(`🚀 Found ${due.length} due notifications at ${now.toISOString()}`)
 
@@ -25,5 +24,5 @@ export default defineEventHandler(
     }
 
     return { success: true, processed: due.length }
-  }
+  },
 )
