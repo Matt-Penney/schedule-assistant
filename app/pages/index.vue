@@ -3,7 +3,7 @@ const pwa = usePWA()
 const toast = useToast()
 
 async function subscribe() {
-  const res = await $fetch('/api/push/subscribe-test', { method: 'POST' })
+  const res = await $fetch('/api/subscribe-test', { method: 'POST' })
   toast.add({
     title: 'Push Subscription Test',
     description: JSON.stringify(res.message),
@@ -24,11 +24,10 @@ async function subscribe() {
       </ClientOnly>
     </DevOnly>
 
-    <button
+    <UButton
       class="p-2 bg-blue-600 text-white rounded"
+      label="Test Push Subscription"
       @click="subscribe"
-    >
-      Test Push Subscription
-    </button>
+    />
   </div>
 </template>
