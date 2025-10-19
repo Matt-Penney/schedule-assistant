@@ -66,12 +66,13 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      navigateFallback: '/',
+      // navigateFallback: '/',
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
+    srcDir: 'public',
     // srcDir: 'service-worker',
     // filename: 'sw.ts',
     // client: {
@@ -80,6 +81,9 @@ export default defineNuxtConfig({
     //   // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
     //   periodicSyncForUpdates: 20,
     // },
+    devOptions: {
+      enabled: true,
+    },
     // devOptions: {
     //   enabled: true,
     //   suppressWarnings: true,
