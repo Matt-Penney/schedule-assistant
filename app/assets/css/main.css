@@ -5,15 +5,3 @@
   height: 100%;
   width: 100%;
 }
-
-@theme {
-  --ui-primary: orange;
-}
-
-/* :root {
-  --ui-primary: orange;
-}
-
-.dark {
-  --ui-primary: orange;
-} */

@@ -7,7 +7,7 @@ const { data: test } = await useFetch('/api/test')
     <template #right>
       <UBadge
         label="API"
-        :colour="test ? 'success' : 'error'"
+        :color="test ? 'success' : 'error'"
         variant="solid"
       />
       <UColorModeButton />

@@ -36,20 +36,28 @@ const items: NavigationMenuItem[] = [
 </script>
 
 <template>
-  <UFooter>
-    <template #top>
-      <UNavigationMenu
-        :items="items"
-        class="w-full justify-center"
-        variant="link"
-        color="primary"
-      />
-    </template>
-
-    <template #bottom>
-      <p class="text-center">
-        © 2025 Jarvis Bot. All rights reserved.
-      </p>
-    </template>
-  </UFooter>
+  <footer class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-50">
+    <div class="grid grid-cols-5 gap-0">
+      <UButton
+        v-for="item in items"
+        :key="item.label"
+        :to="item.to"
+        :label="item.label"
+        variant="ghost"
+        color="gray"
+        class="h-16 flex flex-col items-center justify-center rounded-none"
+        @click="item.onSelect?.()"
+      >
+        <template #default>
+          <div class="flex flex-col items-center gap-1">
+            <UIcon
+              :name="item.icon"
+              class="text-xl"
+            />
+            <span class="text-xs">{{ item.label }}</span>
+          </div>
+        </template>
+      </UButton>
+    </div>
+  </footer>
 </template>
