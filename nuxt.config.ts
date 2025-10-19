@@ -54,12 +54,6 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: 'autoUpdate',
-    workbox: {
-      navigateFallback: '/',
-      globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-    },
-    srcDir: 'service-worker',
-    filename: 'sw.ts',
     manifest: {
       name: 'Jarvis Bot',
       short_name: 'Jarvis',
@@ -71,22 +65,28 @@ export default defineNuxtConfig({
         { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
       ],
     },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
-    client: {
-      installPrompt: true,
-      // you don't need to include this: only for testing purposes
-      // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
-      periodicSyncForUpdates: 20,
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallback: '/',
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module',
-    },
+    // srcDir: 'service-worker',
+    // filename: 'sw.ts',
+    // client: {
+    //   installPrompt: true,
+    //   // you don't need to include this: only for testing purposes
+    //   // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
+    //   periodicSyncForUpdates: 20,
+    // },
+    // devOptions: {
+    //   enabled: true,
+    //   suppressWarnings: true,
+    //   navigateFallback: '/',
+    //   navigateFallbackAllowlist: [/^\/$/],
+    //   type: 'module',
+    // },
   },
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL,
