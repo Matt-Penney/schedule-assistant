@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/ui',
     '@formkit/nuxt',
+    '@nuxt/devtools',
   ],
   compatibilityDate: '2025-07-15',
   devtools: {
@@ -53,6 +54,7 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: 'autoUpdate',
+    srcDir: 'public',
     manifest: {
       name: 'Jarvis Bot',
       short_name: 'Jarvis',
@@ -66,6 +68,9 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
+    },
+    devOptions: {
+      enabled: false,
     },
   },
   runtimeConfig: {
