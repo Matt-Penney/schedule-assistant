@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const pwa = usePWA()
+onMounted(() => registerPush())
 </script>
 
 <template>

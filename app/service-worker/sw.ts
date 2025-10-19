@@ -3,7 +3,6 @@ declare let self: ServiceWorkerGlobalScope
 /// <reference lib="webworker" />
 
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push received:', event.data?.text())
   const data = event.data ? event.data.json() : {}
   event.waitUntil(
     self.registration.showNotification(data.title || 'Notification', {
@@ -16,7 +15,5 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  event.waitUntil(
-    clients.openWindow('/'),
-  )
+  event.waitUntil(clients.openWindow('/'))
 })
