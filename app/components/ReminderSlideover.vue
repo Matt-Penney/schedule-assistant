@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const emit = defineEmits<{ close: [boolean] }>()
+const emit = defineEmits<{
+  'close': [boolean]
+  'reminder-added': [any]
+}>()
 
 const myForm = ref('myForm')
 
@@ -15,7 +18,7 @@ function submitForm() {
 async function addReminder(data: any) {
   // console.log('Form submitted with data:', data)
 
-  const { status } = await useFetch('/api/reminders', {
+  const { data: newReminder } = await useFetch('/api/reminders', {
     method: 'post',
     body: {
       title: data.title,
@@ -25,7 +28,7 @@ async function addReminder(data: any) {
     },
   })
 
-  if (status.value !== 'success') {
+  if (!newReminder.value || newReminder.value.status !== 'success') {
     toast.add({
       title: 'Error',
       description: 'Failed to add reminder. Please try again.',
@@ -38,6 +41,9 @@ async function addReminder(data: any) {
       description: 'Reminder added successfully!',
       color: 'success',
     })
+
+    // Emit the new reminder to parent
+    emit('reminder-added', newReminder.value.reminder)
     emit('close', true)
   }
 }

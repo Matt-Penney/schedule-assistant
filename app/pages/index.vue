@@ -8,8 +8,10 @@ const pwa = usePWA()
       Welcome to My App
     </h1>
 
-    <ClientOnly>
-      PWA Installed: {{ pwa?.isPWAInstalled }}
-    </ClientOnly>
+    <DevOnly>
+      <ClientOnly>
+        PWA Installed: {{ pwa?.isPWAInstalled }}
+      </ClientOnly>
+    </DevOnly>
   </div>
 </template>

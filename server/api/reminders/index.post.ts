@@ -7,7 +7,11 @@ export default defineEventHandler(
     if (!body.created_at || !body.title || !body.date_due)
       throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
 
-    await db`insert into reminders (title, date_due, description, created_at) values (${body.title}, ${body.date_due}, ${body.description}, ${body.created_at})`
-    return { status: 'success' }
-  },
+    const result = await db`
+      insert into reminders (title, date_due, description, created_at)
+      values (${body.title}, ${body.date_due}, ${body.description}, ${body.created_at})
+      returning *
+    `
+    return { status: 'success', reminder: result[0] }
+  }
 )

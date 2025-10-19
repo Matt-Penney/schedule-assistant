@@ -43,6 +43,7 @@ const items: NavigationMenuItem[] = [
         :key="item.label"
         :to="item.to"
         :label="item.label"
+        active-color="primary"
         variant="ghost"
         color="gray"
         class="h-16 flex flex-col items-center justify-center rounded-none"
